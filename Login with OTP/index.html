@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <style>
+      input {
+        text-align: center;
+      }
+      input::placeholder {
+        text-align: center;
+      }
+      body {
+        background: #43cea2; /* fallback for old browsers */
+        background: -webkit-linear-gradient(
+          to right,
+          #185a9d,
+          #43cea2
+        ); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(
+          to right,
+          #185a9d,
+          #43cea2
+        ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      style="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      "
+    >
+      <div id="card"></div>
+    </div>
+    <script>
+      function renderpage() {
+        document.getElementById("card").innerHTML = `
+            <div class="text-center bg-white p-5 rounded " >
+                <h1>OTP Verification</h1>
+                <button class="btn btn-primary" onclick=" randomNumber()">Get Otp</button>
+                
+                <h2 id="randomNumber"></h2>
+                <p>Please Enter The OTP </p>
+               
+                <div >
+                <input class="m-2 cu-inpt" id="inp1"  style="height:35px;width:35px"/>
+                <input class="m-2 cu-inpt" id="inp2" style="height:35px;width:35px"/>
+                <input class="m-2 cu-inpt" id="inp3" style="height:35px;width:35px"/>
+                </div>
+
+                <button onclick="submit()" class="btn btn-primary p-1 "> Submit </button>
+                <p id="match"></p>
+            </div>
+            `;
+
+        // randomNumber();
+      }
+      renderpage();
+
+      const inputs = document.querySelectorAll(".cu-inpt");
+      inputs.forEach((input, index) => {
+        input.addEventListener("input", (event) => {
+          if (event.target.value.length == 1 && index < inputs.length - 1) {
+            inputs[index + 1].focus();
+          } else if (
+            event.target.value.length == 1 &&
+            index == inputs.length - 1
+          ) {
+            submit();
+          }
+        });
+      });
+
+      function randomNumber() {
+        const randomnum1 = Math.floor(Math.random() * 10);
+        const randomnum2 = Math.floor(Math.random() * 10);
+        const randomnum3 = Math.floor(Math.random() * 10);
+
+        generatedOTP = `${randomnum1}${randomnum2}${randomnum3}`;
+        console.log("generated OTP : ", generatedOTP);
+
+        document.getElementById("randomNumber").innerHTML = generatedOTP;
+      }
+
+      function submit() {
+        // let otpIN = document.getElementById("otpinput").value;
+        const num1 = document.getElementById("inp1").value;
+        console.log("num1", num1);
+        const num2 = document.getElementById("inp2").value;
+        console.log("num2", num2);
+        const num3 = document.getElementById("inp3").value;
+        console.log("num3", num3);
+        enteredOTP = `${num1}${num2}${num3}`;
+        console.log("entered OTP", enteredOTP);
+
+        if (generatedOTP == enteredOTP) {
+          document.getElementById("match").innerHTML = "your OTP is verified";
+          afterVerificaton();
+        } else if (generatedOTP != enteredOTP) {
+          //   document.getElementById('match').innerHTML="otp is not verified"
+          alert("invalied OTP , Please Try Again");
+          document.getElementById("randomNumber").innerHTML = "";
+          document.getElementById("inp1").value = "";
+          document.getElementById("inp2").value = "";
+          document.getElementById("inp3").value = "";
+        }
+      }
+
+      function afterVerificaton() {
+        setInterval(function () {
+          document.getElementById("card").innerHTML = `
+                <div class="text-center bg-white p-4 rounded " >
+                <h1>Welcome To home page</h1>
+              <p>Your OTP sucessfully verified !!!</p>
+            </div>
+             `;
+        }, 1000);
+      }
+    </script>
+  </body>
+</html>
